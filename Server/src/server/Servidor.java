@@ -14,7 +14,7 @@ import java.util.concurrent.Executors;
 
 public class Servidor {
 	private static final int TIME_OUT = 10000;
-	public static final int N_THREADS = 2;
+	public static final int N_THREADS = 1;
 	private static ServerSocket elSocket;
 	private static Servidor elServidor;
 	private FileWriter fichero;
@@ -73,12 +73,12 @@ public class Servidor {
 
 				sThread = elSocket.accept();
 				sThread.setSoTimeout(TIME_OUT);
-				System.out.println("Thread " + num + " recibe a un cliente.");
+				//System.out.println("Thread " + num + " recibe a un cliente.");
 				executor.submit(new Worker(num, sThread,pw));
 				num++;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 	

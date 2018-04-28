@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.nio.channels.NotYetBoundException;
 import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -76,18 +77,18 @@ public class Worker implements Runnable {
 
     private void printError(Exception e) {
         System.out.println(e.getMessage());
-        e.printStackTrace();
+        //e.printStackTrace();
     }
 
     private String read(BufferedReader reader) throws IOException {
         String linea = reader.readLine();
-        System.out.println("Thread " + id + " (recibe) de <<CLNT-" + linea);
+       // System.out.println("Thread " + id + " (recibe) de <<CLNT-" + linea);
         return linea;
     }
 
     private void write(PrintWriter writer, String msg) {
         writer.println(msg);
-        System.out.println("Srv " + id + ">>SERV (envia):" + msg);
+        //System.out.println("Srv " + id + ">>SERV (envia):" + msg);
     }
 
     public void run() {
@@ -158,7 +159,7 @@ public class Worker implements Runnable {
             	certificadoCliente = (X509Certificate)certFactory.generateCertificate(inputStream);
             } catch(CertificateException ce){
             	write(writer, ESTADO + SEPARADOR + ERROR);
-            	ce.printStackTrace();
+            	//ce.printStackTrace();
             	throw new FontFormatException(
                   "Error en el certificado recibido, no se puede decodificar");
             }
@@ -186,7 +187,7 @@ public class Worker implements Runnable {
           			}
           			
             } catch (Exception e) {
-                e.printStackTrace();
+               // e.printStackTrace();
             }
 
             //Se inicia a contar el tiempo antes de leer el mensaje del cliente
@@ -256,15 +257,15 @@ public class Worker implements Runnable {
             }
             
             synchronized (pw) {
-            	pw.println("id: '" + id + "' socket: "+ ss + " tiempo leyendo y obteniendo llave: " +total);
+            	//pw.println("id: '" + id + "' socket: "+ ss + " tiempo leyendo y obteniendo llave: " +total);
             	Servidor.numClientes--;
-            	System.out.println("Clientes faltantes:" +Servidor.numClientes);
-            	
-            	if(Servidor.numClientes ==0) {
-            		pw.close();
-            	}
+            	System.out.println(total);
+          
+            	pw.notifyAll();
 			}
-            System.out.println("Thread " + id + "Terminando\n");
+            
+            
+           // System.out.println("Thread " + id + "Terminando\n");
            
 
         } catch (NullPointerException e) {
@@ -311,26 +312,26 @@ public class Worker implements Runnable {
             } catch (Exception localException7) {
             }
         } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
 
             try {
                 ss.close();
             } catch (Exception localException8) {
             }
         } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             try {
                 ss.close();
             } catch (Exception localException9) {
             }
         } catch (BadPaddingException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             try {
                 ss.close();
             } catch (Exception localException10) {
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             try {
                 ss.close();
             } catch (Exception localException11) {
