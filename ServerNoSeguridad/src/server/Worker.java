@@ -191,7 +191,7 @@ public class Worker implements Runnable {
             }
 
             //Se inicia a contar el tiempo antes de leer el mensaje del cliente
-            long inicio = System.currentTimeMillis();
+         //   long inicio = System.currentTimeMillis();
           
             
             // verificamos que el cliente comprobo nuestro certificado
@@ -203,25 +203,25 @@ public class Worker implements Runnable {
             
             	
             // inicio de la comunicacion de las llaves
-
+            /*
             SecretKey llaveSimetrica = Seguridad.keyGenGenerator(algoritmos[1]);
             byte[] cyph = Seguridad.aE(llaveSimetrica.getEncoded(),
                     certificadoCliente.getPublicKey(), algoritmos[2]);
 
             String llav = Transformacion.toHexString(cyph);  
-            
+           */ 
             //Se termina de tomar el tiempo de lectura del socket y generación de la llave
-            long finish = System.currentTimeMillis();
+           // long finish = System.currentTimeMillis();
             
             //Tiempo total gastado en leer y generar la llave simetrica
-            long total = finish - inicio;
+         //   long total = finish - inicio;
             
           
             
-            write(writer, INICIO + SEPARADOR + llav); // aqui le enviamos al cliente la llave simetrica cifrada con la asimetrica del certificado
+            write(writer, INICIO); // aqui le enviamos al cliente la llave simetrica cifrada con la asimetrica del certificado
 
             // recibimos respuesta del cliente con la localizacion cifrada con la simetrica. 
-            linea = read(reader);
+           /* linea = read(reader);
             String[] parts = linea.split(SEPARADOR);
             String cipheredLocationHex = parts[1];
             
@@ -230,27 +230,29 @@ public class Worker implements Runnable {
             byte[] cipheredLocation = Seguridad.sD(
             		cipheredLocationBytes, llaveSimetrica,
                     algoritmos[1]);
-            
+           */ 
            
                        
             // recibimos el digest cifrado con la clave publica del server
             linea = read(reader);
-            String[] parts2 = linea.split(SEPARADOR);
-            String digestHex = parts2[1];
-            byte[] encryptedDigestBytes = Transformacion.toByteArray(digestHex);
+            //String[] parts2 = linea.split(SEPARADOR);
+            //String digestHex = parts2[1];
+            //byte[] encryptedDigestBytes = Transformacion.toByteArray(digestHex);
             
-            byte[] digestBytes = Seguridad.aD(
-            		encryptedDigestBytes, keyPair.getPrivate(),
-                    algoritmos[2]);
+            //byte[] digestBytes = Seguridad.aD(
+            	//	encryptedDigestBytes, keyPair.getPrivate(),
+                  //  algoritmos[2]);
             
             // hacemos la verificacion final
-            boolean verificacion = Seguridad.verifyIntegrity(cipheredLocation,
-                    llaveSimetrica, algoritmos[3], digestBytes);
+           // boolean verificacion = Seguridad.verifyIntegrity(cipheredLocation,
+             //       llaveSimetrica, algoritmos[3], digestBytes);
 
-            if (verificacion) {
-                String rta = ESTADO + SEPARADOR + OK;
-                write(writer, rta);
-
+            if (linea.equals("ACT1")) {
+            	linea = read(reader);
+            	if(linea.equals("ACT2")) {
+            		 write(writer,"OK");
+            	}
+                
             } else {
                 String rta = ESTADO + SEPARADOR + ERROR;
                 write(writer, rta);
@@ -259,7 +261,8 @@ public class Worker implements Runnable {
             synchronized (pw) {
             	//pw.println("id: '" + id + "' socket: "+ ss + " tiempo leyendo y obteniendo llave: " +total);
             	Servidor.numClientes--;
-            	System.out.println(total);
+            	System.out.println(Servidor.numClientes);
+            	//System.out.println(total);
           
             	pw.notifyAll();
 			}
@@ -297,7 +300,7 @@ public class Worker implements Runnable {
                 ss.close();
             } catch (Exception localException5) {
             }
-        } catch (InvalidKeyException e) {
+        } /*catch (InvalidKeyException e) {
             printError(e);
 
             try {
@@ -330,7 +333,7 @@ public class Worker implements Runnable {
                 ss.close();
             } catch (Exception localException10) {
             }
-        } catch (Exception e) {
+        }*/ catch (Exception e) {
             //e.printStackTrace();
             try {
                 ss.close();
