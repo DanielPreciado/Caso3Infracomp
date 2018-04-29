@@ -68,7 +68,7 @@ public class ClienteUnidadDistribucion extends Task {
 	/**
 	 * Indica el PUERTO por el cual se quiere establecer la conexion
 	 */
-	public static final int PUERTO = 7000;
+	public static final int PUERTO = 5000;
 
 	/**
 	 * Indica la direccion sobre la cual se esta ejecutando el server
@@ -330,20 +330,20 @@ public class ClienteUnidadDistribucion extends Task {
 						out.println(mensajeEnviado);
 
 						mensajeRecibido = in.readLine();
-						if(mensajeRecibido.split(":")[0].equals(INICIO)) 
+						if(mensajeRecibido.equals(INICIO)) 
 						{
 //							System.out.println("recibi el mensaje de inicio con el codigo separado por :");
-							String cod = mensajeRecibido.split(":")[1];
-							byte[] cipheredText = transformarDecodificar(cod);
-							descifrar(cipheredText);
-							cod = "41 24.2028, 2 10.4418";
-							cipheredText = cifrar(cod);
+//							String cod = mensajeRecibido.split(":")[1];
+//							byte[] cipheredText = transformarDecodificar(cod);
+//							descifrar(cipheredText);
+//							cod = "41 24.2028, 2 10.4418";
+//							cipheredText = cifrar(cod);
 //							System.out.println(cipheredText+ "public key");
 							long initialTime = System.currentTimeMillis();
-							out.println(ACT1+":"+DatatypeConverter.printHexBinary(cipheredText));
+							out.println(ACT1);
 							
 							
-							out.println(ACT2+":"+ DatatypeConverter.printHexBinary(cifrar2(new String(calcularHash(cod)),cert.getPublicKey())));
+							out.println(ACT2);
 
 							mensajeRecibido = in.readLine();
 							long  finalTime = System.currentTimeMillis();
