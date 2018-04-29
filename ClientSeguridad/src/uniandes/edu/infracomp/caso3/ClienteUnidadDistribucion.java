@@ -68,12 +68,12 @@ public class ClienteUnidadDistribucion extends Task {
 	/**
 	 * Indica el PUERTO por el cual se quiere establecer la conexion
 	 */
-	public static final int PUERTO = 7000;
+	public static final int PUERTO = 5000;
 
 	/**
 	 * Indica la direccion sobre la cual se esta ejecutando el server
 	 */
-	public static final String SERVIDOR = "157.253.93.194";
+	public static final String SERVIDOR = "172.24.42.42";
 
 	/**
 	 * tamanio de llave utilizado
